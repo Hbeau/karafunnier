@@ -40,7 +40,7 @@ def song_analysis(title,artist):
     }
 
 songs = []
-with open('input_test.csv', newline='') as csvfile:
+with open('input.csv', newline='') as csvfile:
 
     reader = csv.reader(csvfile, delimiter=';')
 
