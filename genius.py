@@ -2,10 +2,9 @@ import requests
 from bs4 import BeautifulSoup
 from config import credentials
 bearer_token = f"bearer {credentials['genius']['access-token']}"
-def getGeniusLyrics(title,artist):
-    searchResult = requests.get('https://api.genius.com/search',params={'q' : f"{title}"},headers={'authorization' : bearer_token})
-    link = searchResult.json()['response']['hits'][0]['result']["path"]
-    htmlResult = requests.get(f"https://genius.com{link}");
+
+def getGeniusLyrics(path):
+    htmlResult = requests.get(f"https://genius.com{path}");
     soup = BeautifulSoup(htmlResult.text,features="html.parser");
 
     soup.select("[class*=LyricsHeader__Container]")[0].decompose();
@@ -16,3 +15,10 @@ def getGeniusLyrics(title,artist):
         br.replace_with("\n")
     return soup.select("#lyrics-root")[0].text
 
+def getGeniusSong(title):
+    searchResult = requests.get('https://api.genius.com/search',params={'q' : f"{title}"},headers={'authorization' : bearer_token})
+    hits = searchResult.json()['response']['hits']
+    songHit = list(filter(lambda hit : hit["type"] == "song",hits))
+    if (len(songHit)>0) :
+        return songHit[0]['result']
+    raise Exception("Song not found on Genius")
