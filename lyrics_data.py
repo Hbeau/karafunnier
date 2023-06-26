@@ -1,9 +1,9 @@
 import string
+from collections import defaultdict
 import textstat
 from nltk import FreqDist, tokenize
 import nltk
 import re
-from collections import defaultdict
 
 languages_map = {
     "en": "english",
@@ -14,14 +14,14 @@ languages_map = {
 
 
 def words(text, language):
-    text_new = "".join([i for i in text if i not in string.punctuation])
-    words = tokenize.word_tokenize(text_new.lower())
-    if(language in languages_map.keys()):
+    text_without_punctuation = "".join([i for i in text if i not in string.punctuation])
+    words_extracted = tokenize.word_tokenize(text_without_punctuation.lower())
+    if language in languages_map.keys():
         lang = languages_map.get(language)
         stopwords = nltk.corpus.stopwords.words(lang)
-        words_new = [i for i in words if i not in stopwords]
+        words_new = [i for i in words_extracted if i not in stopwords]
         return words_new
-    return words
+    return words_extracted
 
 
 def common_words(words):

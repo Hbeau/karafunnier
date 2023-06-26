@@ -43,7 +43,7 @@ def song_analysis(title,artist):
                 'energy': music['energy'] 
         }
     except Exception as exp:
-        print(exp) 
+        print(exp)
 
 def main(argv):
     try:

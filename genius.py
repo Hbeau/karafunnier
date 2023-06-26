@@ -17,6 +17,8 @@ def getGeniusLyrics(path):
 
 def getGeniusSong(title):
     searchResult = requests.get('https://api.genius.com/search',params={'q' : f"{title}"},headers={'authorization' : bearer_token})
+    if searchResult.status_code != 200:
+         raise Exception("Unable to get Genius response")
     hits = searchResult.json()['response']['hits']
     songHit = list(filter(lambda hit : hit["type"] == "song",hits))
     if (len(songHit)>0) :
